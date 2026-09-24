@@ -1,4 +1,13 @@
-# Android 构建记录 — 2026-09-05
+# Android 构建记录
+
+## 0.1.8 GitHub 应用内更新 — 2026-09-24
+
+- 启动后在后台静默查询一次 `dandancow874/epic7-calc-mobile` 的最新 GitHub Release；当前版本、网络失败或资源不符合命名规则时不打扰用户。
+- 发现更高版本后显示取消/确认弹窗。确认后使用 Android `DownloadManager` 下载签名 APK，下载完成后打开系统安装界面。
+- Android 8 及以上首次使用需要开启本应用的“允许安装未知应用”；安装确认由 Android 系统负责，无法静默绕过。
+- APK 仅写入应用专属 `Download` 目录，不申请共享存储权限；下载地址限制为本仓库的 HTTPS Release 路径，文件名限制为正式 ARM64 APK 格式。
+- 首个带更新器的版本仍需手动安装一次。之后只要 GitHub Release 使用相同包名、相同签名并提高版本号，即可由应用提示覆盖安装。
+- 验证：33 个测试文件、154 项测试通过；Vite 生产构建通过；Android ARM64 Rust/Kotlin/Gradle 构建通过。签名 APK 为 `release/Epic7-Calc-Mobile-v0.1.8-arm64.apk`，32,925,120 字节，SHA256 `C69CF0287A678C346CD3F6BAEB3A9C6D489343B628CC2B52D0B1451A62B28898`；v2/v3 签名与 16 KiB ZIP 对齐通过，Manifest 已包含 `INTERNET` 和 `REQUEST_INSTALL_PACKAGES`。真机下载安装流程仍待覆盖安装验证。
 
 ## 0.1.1 修复包
 

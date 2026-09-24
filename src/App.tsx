@@ -5,6 +5,7 @@ import { PrimaryNav, type CalculatorMode } from './components/app-shell/PrimaryN
 import { HeroBuildPage } from './pages/builds/HeroBuildPage';
 import { rememberCalculatorBuild } from './features/build-presets/calculatorBuildBridge';
 import { handleMobileBack } from './mobileBack';
+import { AndroidUpdatePrompt } from './components/AndroidUpdatePrompt';
 
 export function App() {
   const [page, setPage] = useState<AppPage>(loadAppPage);
@@ -19,6 +20,7 @@ export function App() {
 
   return (
     <>
+      <AndroidUpdatePrompt />
       <div className="suite-nav-shell"><PrimaryNav page={page} calculatorMode={calculatorMode} onNavigate={setPage} onCalculatorMode={setCalculatorMode} /></div>
       {page === 'calculator' && <CalculatorWorkspace requestedMode={calculatorMode} onModeChange={setCalculatorMode} />}
       {page === 'builds' && <HeroBuildPage initialHeroCode={buildHeroCode} onUseInCalculator={(side, heroId, presetId) => {

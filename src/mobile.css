@@ -180,6 +180,18 @@ button { touch-action: manipulation; }
 
 /* Compact touch layout: shrink content spacing, not the viewport itself. */
 body { font-size: 14px; line-height: 1.4; }
+.android-update-backdrop { position: fixed; inset: 0; z-index: 2200; display: grid; place-items: center; padding: 20px; background: rgba(3,6,8,.78); backdrop-filter: blur(8px); }
+.android-update-dialog { position: relative; width: min(420px,100%); padding: 24px; border: 1px solid rgba(75,189,244,.35); border-radius: 18px; color: #f5f3ee; background: #1b2225; box-shadow: 0 24px 70px rgba(0,0,0,.58); }
+.android-update-close { position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.1); border-radius: 50%; color: #fff; background: rgba(255,255,255,.04); }
+.android-update-eyebrow { color: #4bbdf4; font-size: 11px; font-weight: 800; letter-spacing: .14em; }
+.android-update-dialog h2 { margin: 6px 42px 8px 0; font-size: 24px; }
+.android-update-version { margin: 0 0 14px; color: #bdc8cc; }
+.android-update-version strong { color: #69d2ff; }
+.android-update-notes { max-height: 34dvh; overflow-y: auto; padding: 12px; border-radius: 10px; color: #d4dcdf; background: rgba(255,255,255,.045); line-height: 1.65; white-space: pre-wrap; }
+.android-update-message { color: #d4dcdf; line-height: 1.7; }
+.android-update-error { color: #ff8585; }
+.android-update-dialog footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.android-update-dialog footer button { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 0 16px; }
 .mobile-drawer-backdrop { z-index: 1000; }
 .mobile-drawer { overflow-y: auto; background: #1b1e1c; }
 .mobile-drawer nav button { min-height: 58px; padding: 7px 10px; }
