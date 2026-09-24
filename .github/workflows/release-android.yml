@@ -1,0 +1,109 @@
+name: Release Android APK
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android build components
+        shell: bash
+        run: |
+          sdkmanager "platforms;android-36" "build-tools;36.0.0" "ndk;27.2.12479018"
+          echo "NDK_HOME=$ANDROID_SDK_ROOT/ndk/27.2.12479018" >> "$GITHUB_ENV"
+
+      - name: Install JavaScript dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Verify tag matches package version
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          test "$GITHUB_REF_NAME" = "v$VERSION" || {
+            echo "Tag $GITHUB_REF_NAME does not match package version v$VERSION"
+            exit 1
+          }
+
+      - name: Build unsigned ARM64 APK
+        run: npm run android:apk -- --ci
+
+      - name: Sign and verify APK
+        shell: bash
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('./package.json').version")
+          UNSIGNED_APK=$(find src-tauri/gen/android/app/build/outputs/apk -name '*release-unsigned.apk' -print -quit)
+          test -n "$UNSIGNED_APK"
+
+          mkdir -p release
+          printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/mobile-release.p12"
+          "$ANDROID_SDK_ROOT/build-tools/36.0.0/zipalign" -f -P 16 4 "$UNSIGNED_APK" "$RUNNER_TEMP/aligned.apk"
+          "$ANDROID_SDK_ROOT/build-tools/36.0.0/apksigner" sign \
+            --ks "$RUNNER_TEMP/mobile-release.p12" \
+            --ks-type PKCS12 \
+            --ks-key-alias epic7-mobile \
+            --ks-pass env:ANDROID_KEYSTORE_PASSWORD \
+            --key-pass env:ANDROID_KEYSTORE_PASSWORD \
+            --out "release/Epic7-Calc-Mobile-v${VERSION}-arm64.apk" \
+            "$RUNNER_TEMP/aligned.apk"
+          "$ANDROID_SDK_ROOT/build-tools/36.0.0/apksigner" verify --verbose "release/Epic7-Calc-Mobile-v${VERSION}-arm64.apk"
+          "$ANDROID_SDK_ROOT/build-tools/36.0.0/zipalign" -c -P 16 4 "release/Epic7-Calc-Mobile-v${VERSION}-arm64.apk"
+          cd release
+          sha256sum "Epic7-Calc-Mobile-v${VERSION}-arm64.apk" > "Epic7-Calc-Mobile-v${VERSION}-arm64.apk.sha256"
+
+      - name: Publish GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          NOTES="docs/RELEASE_NOTES_v${VERSION}.md"
+          if [[ -f "$NOTES" ]]; then
+            gh release create "$GITHUB_REF_NAME" \
+              "release/Epic7-Calc-Mobile-v${VERSION}-arm64.apk" \
+              "release/Epic7-Calc-Mobile-v${VERSION}-arm64.apk.sha256" \
+              --title "Epic7 Calc Mobile v${VERSION}" \
+              --notes-file "$NOTES"
+          else
+            gh release create "$GITHUB_REF_NAME" \
+              "release/Epic7-Calc-Mobile-v${VERSION}-arm64.apk" \
+              "release/Epic7-Calc-Mobile-v${VERSION}-arm64.apk.sha256" \
+              --title "Epic7 Calc Mobile v${VERSION}" \
+              --generate-notes
+          fi

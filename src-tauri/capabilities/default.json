@@ -1,0 +1,8 @@
+{
+  "identifier": "default",
+  "description": "Epic7 Calc Mobile core permissions",
+  "windows": [
+    "main"
+  ],
+  "permissions": ["core:default"]
+}

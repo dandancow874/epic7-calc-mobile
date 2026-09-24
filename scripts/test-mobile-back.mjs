@@ -1,0 +1,32 @@
+import { chromium } from 'playwright';
+import assert from 'node:assert/strict';
+const browser = await chromium.launch();
+try {
+  const page = await browser.newPage({ viewport: { width: 360, height: 800 } });
+  await page.goto('http://127.0.0.1:5184');
+  await page.waitForFunction(() => typeof window.__epic7HandleBack === 'function');
+  const back = () => page.evaluate(() => window.__epic7HandleBack());
+  assert.equal(await back(), false, 'root asks native exit confirmation');
+  await page.getByRole('button', { name: '打开工具导航' }).click();
+  assert.equal(await back(), true);
+  await page.locator('.mobile-drawer').waitFor({ state: 'hidden' });
+  await page.locator('.mobile-combatant.attack .mobile-combatant__summary').click();
+  await page.locator('.mobile-combatant.attack .portrait-button').click();
+  await page.locator('.searchbox input').fill('雅碧凯');
+  assert.equal(await back(), true, 'back closes hero search even with focused input');
+  await page.locator('.picker').waitFor({ state: 'hidden' });
+  assert.equal(await back(), false);
+  await page.locator('.mobile-combatant.attack .artifact-icon-button').click();
+  await page.locator('.picker').waitFor();
+  assert.equal(await back(), true);
+  await page.locator('.picker').waitFor({ state: 'hidden' });
+  await page.locator('.mobile-combatant.attack [data-artifact-level]').click();
+  assert.equal(await back(), true, 'input focus consumes return');
+  assert.equal(await back(), false, 'next return requests confirmation, not automatic exit');
+  await page.getByRole('button', { name: '打开工具导航' }).click();
+  await page.locator('.mobile-drawer nav button').filter({ hasText: '角色装备' }).click();
+  await page.locator('.build-hero-picker-trigger').click();
+  assert.equal(await back(), true);
+  await page.locator('.build-hero-picker-modal').waitFor({ state: 'hidden' });
+  console.log('PASS root, drawer, hero/artifact picker, input focus, equipment hero picker');
+} finally { await browser.close(); }

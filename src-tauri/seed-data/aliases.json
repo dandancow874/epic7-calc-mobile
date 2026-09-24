@@ -1,0 +1,58 @@
+{
+  "heroes": {
+    "eye_of_the_abyss_fumyr": [
+      "深海之眼芙米尔",
+      "木原神"
+    ],
+    "harsetti": [
+      "赫尔赛蒂",
+      "Harsetti",
+      "女帝"
+    ],
+    "afternoon_soak_flan": [
+      "午时戏水芙兰",
+      "火芙兰"
+    ],
+    "rinak": [
+      "利纳柯",
+      "乘风"
+    ],
+    "lilibet": [
+      "莉莉贝",
+      "llb"
+    ],
+    "uncharted_pioneer_politis": [
+      "未知开拓者佛里蒂丝",
+      "水火双"
+    ],
+    "schniel": [
+      "修尼尔",
+      "耐毒王"
+    ],
+    "lisette": [
+      "黎洁特",
+      "迪彩"
+    ],
+    "kawerik": [
+      "卡威利",
+      "火卡"
+    ],
+    "rimuru": [
+      "利姆路",
+      "史莱姆"
+    ],
+    "witch_of_the_mere_tenebria": [
+      "湖畔魔女泰妮布里雅",
+      "光泰妮"
+    ],
+    "hecate": [
+      "赫卡特",
+      "死神"
+    ],
+    "renoa": [
+      "蕾诺娅",
+      "蕾欧娜"
+    ]
+  },
+  "artifacts": {}
+}
