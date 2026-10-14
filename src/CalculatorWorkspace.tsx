@@ -41,6 +41,7 @@ import type { BuildPreset } from './features/build-presets/types';
 import { resolveDefenderArtifactEffects } from './features/defender-effects/defenderArtifactEffects';
 import { defenderBattleMaxHP, defenderOpeningBarrier, mergeCalculatorValues, isLinkedTargetField } from './features/calculator/mergeCalculatorValues';
 import { damageRemainingPercent } from './features/calculator/damageDisplay';
+import { openingAttackDefense } from './features/calculator/openingStats';
 import type { LibraryArtifact } from './library/types';
 
 type PickerState = null | 'attacker' | 'defender' | 'artifact' | 'defenderArtifact';
@@ -373,8 +374,8 @@ export function CalculatorWorkspace({ requestedMode = 'damage', onModeChange }: 
   }, []);
 
   const mergedValues = useMemo(
-    () => mergeCalculatorValues(attacker, defender, attacker.useDefenderPresetValues !== false),
-    [attacker, defender],
+    () => mergeCalculatorValues(attacker, defender, attacker.useDefenderPresetValues !== false, defenderId),
+    [attacker, defender, defenderId],
   );
 
   const rows = useMemo<DamageRow[]>(() => {
@@ -430,14 +431,14 @@ export function CalculatorWorkspace({ requestedMode = 'damage', onModeChange }: 
         targetDefenseIncrease: effects.defenseIncrease,
         damageReduction: effects.damageReduction,
         damageTransfer: effects.damageTransfer,
-        targetBarrier: defenderOpeningBarrier(withArtifactHP, effects.barrierPercent, hasShieldSet),
+        targetBarrier: defenderOpeningBarrier(withArtifactHP, effects.barrierPercent, hasShieldSet, defenderId),
       };
       return (['targetMaxHPIncrease', 'targetDefenseIncrease', 'damageReduction', 'damageTransfer', 'targetBarrier'] as const)
         .every((key) => current[key] === next[key]) ? current : next;
     });
   }, [defenderArtifact, defender.defenderArtifactCode, defender.defenderArtifactLevel, defender.targetMaxHP,
     defender.targetLingeringFragranceStack, defender.targetDivinityStack, defender.targetHasSuperhumanization,
-    defender.targetHasCollapse, defender.useBuildPreset, defenderBuildId, defenderBuilds]);
+    defender.targetHasCollapse, defender.targetSkillTreeCompleted, defender.useBuildPreset, defenderBuildId, defenderBuilds, defenderId]);
 
   const updateSide = (side: Side, key: string, value: number | boolean) => {
     const updatedPreset = typeof value === 'number' ? queueBuildStatSave(side, key, value) : null;
@@ -483,6 +484,7 @@ export function CalculatorWorkspace({ requestedMode = 'damage', onModeChange }: 
         ...(updatedPreset && key === 'defenderArtifactLevel' ? {
         targetMaxHP: updatedPreset.targetStats.hp,
         targetCurrentHP: updatedPreset.targetStats.hp,
+        targetAttack: updatedPreset.targetStats.atk,
         targetDefense: updatedPreset.targetStats.def,
       } : {}),
       };
@@ -775,6 +777,7 @@ export function CalculatorWorkspace({ requestedMode = 'damage', onModeChange }: 
               ...(updatedPreset ? {
                 targetMaxHP: updatedPreset.targetStats.hp,
                 targetCurrentHP: updatedPreset.targetStats.hp,
+                targetAttack: updatedPreset.targetStats.atk,
                 targetDefense: updatedPreset.targetStats.def,
               } : {}),
             }));
@@ -938,7 +941,14 @@ function CombatPanel(props: {
 }) {
   const hero = Heroes[props.heroId] ?? Heroes.abigail;
   const artifact = props.artifactId ? Artifacts[props.artifactId] : null;
-  const fields = numberFields[props.side];
+  const fields: ReadonlyArray<readonly [string, string, number, number]> = props.side === 'defender' && hero.equalizesAttackDefense
+    ? numberFields.defender.map((field) => field[0] === 'targetDefense'
+        ? ['targetAttack', '攻击 / 开局防御', 0, 10000] as const
+        : field)
+    : numberFields[props.side];
+  const openingStats = openingAttackDefense(props.heroId,
+    Number(props.values[props.side === 'attacker' ? 'attack' : 'targetAttack'] || 0),
+    Number(props.values[props.side === 'attacker' ? 'casterDefense' : 'targetDefense'] || 0));
       const commonAttackerBuffs = [
     ...mainAttackerBuffs,
     ...(props.hasAdditionalDamage ? [['pursuitSet', '追击套', 'sets/pursuit-set.png'] as const] : []),
@@ -951,7 +961,7 @@ function CombatPanel(props: {
     ], props.heroId))
       .filter((field) => !fields.some(([key]) => key === field))
       .filter((field) => !commonAttackerBuffs.some(([key]) => key === field))
-    : [];
+    : (Object.keys(hero.specialtyChangeStats).length ? ['targetSkillTreeCompleted'] : []);
   const activeExtraBuffs = extraAttackerBuffs
     .filter(([key]) => !commonAttackerBuffs.some(([commonKey]) => commonKey === key))
     .filter(([key]) => Boolean(props.values[key]))
@@ -1050,7 +1060,9 @@ function CombatPanel(props: {
         ))}
       </div>
 
-      {props.side === 'attacker' && <h3 className="section-label">角色特性</h3>}
+      {props.side === 'defender' && hero.equalizesAttackDefense && <p className="opening-stat-note">防御按面板攻击 {openingStats.defense.toLocaleString()} 计算，不受攻击提升及防御提升／降低影响。</p>}
+
+      {specialFields.length > 0 && <h3 className="section-label">角色特性</h3>}
 
       {props.side === 'attacker' && specialFields.some(isLinkedTargetField) && (
         <label className="preset-link-toggle">
@@ -1067,7 +1079,8 @@ function CombatPanel(props: {
               field={field}
               label={calculatorSpecialFieldLabel(props.heroId, field, props.values[field])}
               value={props.values[field]}
-              maximum={hero.heroSpecificMaximums?.[field] ?? artifact?.artifactSpecificMaximums?.[field]}
+              maximum={hero.heroSpecificMaximums?.[field]
+                ?? artifact?.artifactSpecificMaximums?.[field]}
               locked={props.useDefenderPreset !== false && isLinkedTargetField(field)}
               onChange={(value) => props.onValueChange(props.side, field, value)}
             />
@@ -1241,7 +1254,7 @@ function AllyMaxHPIncreaseInput(props: {
 function isBuildOwnedVisibleField(side: Side, key: string) {
   return side === 'attacker'
     ? key === 'attack' || key === 'critDamage'
-    : key === 'targetMaxHP' || key === 'targetDefense';
+    : key === 'targetMaxHP' || key === 'targetDefense' || key === 'targetAttack';
 }
 
 function Chip(props: { label: string; icon: string; checked: boolean; onChange: (checked: boolean) => void }) {
@@ -2253,6 +2266,8 @@ function shortFieldName(field: string) {
     targetSpeedDown: '目标速度降低',
     targetHasRampage: '目标暴走',
     targetDefenseDownAftermath: '追加前防破',
+    targetSkillTreeCompleted: '转职技能树',
+    targetInjuryPercent: '目标伤口比例(%)',
     renoaSoulBullets: '镇魂子弹数量',
   };
   return names[field] || fieldName(field);

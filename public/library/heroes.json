@@ -66407,14 +66407,14 @@
               {
                 "key": "pow",
                 "label": "修正倍率(Pow)",
-                "value": "0.9",
-                "displayValue": "0.9"
+                "value": "1.0",
+                "displayValue": "1.0"
               },
               {
                 "key": "BF_BONUSATT_UP_STATUS_ADD_max_hp_rate",
                 "label": "伤害加成",
-                "value": "4.0% 目标 最大生命值",
-                "displayValue": "4.0% 目标 最大生命值"
+                "value": "5.0% 目标 最大生命值",
+                "displayValue": "5.0% 目标 最大生命值"
               },
               {
                 "key": "HPUP_DAMAGE_value",
@@ -66437,8 +66437,8 @@
               {
                 "key": "pow",
                 "label": "修正倍率(Pow)",
-                "value": "0.9",
-                "displayValue": "0.9"
+                "value": "1.0",
+                "displayValue": "1.0"
               },
               {
                 "key": "BF_BONUSATT_UP_STATUS_ADD_max_hp_rate",
@@ -81928,8 +81928,8 @@
               {
                 "key": "att_rate",
                 "label": "基础倍率(Attack Rate)",
-                "value": "1.5",
-                "displayValue": "1.5"
+                "value": "1.4",
+                "displayValue": "1.4"
               },
               {
                 "key": "pow",
@@ -81960,70 +81960,70 @@
     "specialtyChange": {
       "generalEffects": [
         {
+          "description": "防御力提升15%。",
           "id": "earth-rune-3",
-          "name": "大地符文3",
-          "description": "防御力提升15%。"
+          "name": "大地符文3"
         },
         {
+          "description": "受到光明属性敌人攻击后，使除自身外的全体我军人员速攻值提升10%。",
           "id": "harvest-rune-3",
-          "name": "收获符文3",
-          "description": "受到光明属性敌人攻击后，使除自身外的全体我军人员速攻值提升10%。"
+          "name": "收获符文3"
         },
         {
+          "description": "光明属性敌人回合结束时，使自身速攻值提升30%。",
           "id": "wedge-rune-3",
-          "name": "楔子符文3",
-          "description": "光明属性敌人回合结束时，使自身速攻值提升30%。"
+          "name": "楔子符文3"
         },
         {
+          "description": "生命值提升15%。",
           "id": "life-rune-3",
-          "name": "生命符文3",
-          "description": "生命值提升15%。"
+          "name": "生命符文3"
         },
         {
+          "description": "生命值提升10%。",
           "id": "health-rune-3",
-          "name": "健康符文3",
-          "description": "生命值提升10%。"
+          "name": "健康符文3"
         },
         {
+          "description": "攻击时，根据目标的伤口效果等比提升40%的伤害量。",
           "id": "thorn-rune-3",
-          "name": "芒刺符文3",
-          "description": "攻击时，根据目标的伤口效果等比提升40%的伤害量。"
+          "name": "芒刺符文3"
         }
       ],
       "skillEffects": [
         {
-          "id": "chain-attack",
-          "name": "连锁攻击",
-          "icon": "/library/heroes/chaos-sect-axe-sk_c4025_2.png",
           "effects": [
             {
+              "description": "我军人员受到光明属性敌人攻击时，有30%的几率使用连锁攻击反击。",
               "id": "courage-rune-3",
-              "name": "勇气符文3",
-              "description": "我军人员受到光明属性敌人攻击时，有30%的几率使用连锁攻击反击。"
+              "name": "勇气符文3"
             },
             {
+              "description": "使用连锁攻击时，若为自身回合，则有100%的几率使目标技能冷却时间增加1回合。若目标为光明属性，则无视效果抵抗。",
               "id": "disease-rune-3",
-              "name": "疾病符文3",
-              "description": "使用连锁攻击时，若为自身回合，则有100%的几率使目标技能冷却时间增加1回合。若目标为光明属性，则无视效果抵抗。"
+              "name": "疾病符文3"
             },
             {
+              "description": "连锁攻击的伤害量提升10%。",
               "id": "unknown-rune-3",
-              "name": "未知符文3",
-              "description": "连锁攻击的伤害量提升10%。"
+              "name": "未知符文3"
             }
-          ]
+          ],
+          "icon": "/library/heroes/chaos-sect-axe-sk_c4025_2.png",
+          "id": "chain-attack",
+          "name": "连锁攻击"
         },
         {
-          "id": "bloody-blow",
-          "name": "血气一击",
-          "icon": "/library/heroes/chaos-sect-axe-sk_c4025_3.png",
           "effects": [
             {
+              "description": "使用血气一击时，若目标为光明属性，则效果发生率提升25%，并无视目标的效果抵抗。",
               "id": "fruit-rune-3",
-              "name": "果实符文3",
-              "description": "使用血气一击时，若目标为光明属性，则效果发生率提升25%，并无视目标的效果抵抗。"
+              "name": "果实符文3"
             }
-          ]
+          ],
+          "icon": "/library/heroes/chaos-sect-axe-sk_c4025_3.png",
+          "id": "bloody-blow",
+          "name": "血气一击"
         }
       ]
     }
@@ -99694,7 +99694,7 @@
         {
           "id": "trust-rune",
           "name": "信赖符文",
-          "description": "速攻值提升2%。"
+          "description": "夹攻率提升2%。"
         },
         {
           "id": "restraint-rune",
@@ -109051,6 +109051,297 @@
         "self_effect_max": "920.0",
         "public_slot": "1234",
         "remarks": null
+      }
+    ],
+    "exclusives": [],
+    "tags": [],
+    "dataStatus": "complete"
+  },
+  {
+    "code": "mei-lin",
+    "gameId": "c1191",
+    "name": "梅铃",
+    "nameEn": "Mei Lin",
+    "nameZht": null,
+    "nicknames": [
+      "meiling",
+      "梅林",
+      "meilin"
+    ],
+    "attribute": "fire",
+    "role": "thief",
+    "rarity": 5,
+    "zodiac": "scales",
+    "publishDate": "2026-10-08 11:00:00",
+    "descriptionLine": "守护爱之真谛的\n香族最后的修行者",
+    "story": "因卡厄思痛失了所有同胞，独自幸存下来的香族最后的修行者。坚强乐观的她认为这也是人生的一种修行，努力用积极的态度面对一切。",
+    "profile": {
+      "hobby": "未知",
+      "likes": "未知",
+      "dislikes": "未知",
+      "motto": "未知",
+      "specialty": "未知",
+      "voiceCv": {
+        "en": "CV: Sayaka Senbongi",
+        "ja": "CV: 千本木彩花",
+        "kr": "CV: 이세레나",
+        "zhs": "CV: 千本木彩花"
+      }
+    },
+    "baseStats": {
+      "atk": 1208,
+      "hp": 5178,
+      "def": 508,
+      "spd": 121,
+      "chc": 0.15,
+      "chd": 1.65,
+      "eff": 0,
+      "efr": 0
+    },
+    "artwork": "/library/heroes/mei-lin.webp",
+    "avatar": "/library/heroes/mei-lin-avatar.png",
+    "skills": [
+      {
+        "id": "sk_c1191_1",
+        "name": "火龙拳",
+        "description": "用拳头攻击敌人后，使自身速攻值提升20(25)%，技能冷却时间减少1回合。命中时触发暴击。",
+        "icon": "/library/heroes/mei-lin-sk_c1191_1.png",
+        "cooldown": "",
+        "soulGain": 1,
+        "pointType": null,
+        "pointRequire": 0,
+        "soulBurn": {
+          "cost": 20,
+          "description": "获得额外回合。"
+        },
+        "isAoe": false,
+        "dealsDamage": true,
+        "enhancements": [
+          {
+            "level": 1,
+            "text": "伤害量提升5%"
+          },
+          {
+            "level": 2,
+            "text": "速攻值提升2%"
+          },
+          {
+            "level": 3,
+            "text": "伤害量提升5%"
+          },
+          {
+            "level": 4,
+            "text": "伤害量提升5%"
+          },
+          {
+            "level": 5,
+            "text": "速攻值提升3%"
+          },
+          {
+            "level": 6,
+            "text": "伤害量提升15%"
+          }
+        ],
+        "multipliers": [
+          {
+            "id": "skill_multiplier",
+            "name": "技能倍率",
+            "items": [
+              {
+                "key": "att_rate",
+                "label": "基础倍率(Attack Rate)",
+                "value": "0.9",
+                "displayValue": "0.9"
+              },
+              {
+                "key": "pow",
+                "label": "修正倍率(Pow)",
+                "value": "1",
+                "displayValue": "1"
+              }
+            ]
+          }
+        ],
+        "effects": []
+      },
+      {
+        "id": "sk_c1191_2",
+        "name": "升龙脚",
+        "description": "使自身在2回合内获得攻击力提升效果后，飞踢攻击敌人，消灭时造成灭亡效果。命中时触发暴击。火焰属性我军人员使用技能时，触发强化升龙脚的热情效果。",
+        "icon": "/library/heroes/mei-lin-sk_c1191_2.png",
+        "cooldown": "冷却时间3回合",
+        "soulGain": 1,
+        "pointType": null,
+        "pointRequire": 0,
+        "soulBurn": null,
+        "isAoe": false,
+        "dealsDamage": true,
+        "enhancements": [
+          {
+            "level": 1,
+            "text": "伤害量提升5%"
+          },
+          {
+            "level": 2,
+            "text": "伤害量提升5%"
+          },
+          {
+            "level": 3,
+            "text": "伤害量提升5%"
+          },
+          {
+            "level": 4,
+            "text": "伤害量提升5%"
+          },
+          {
+            "level": 5,
+            "text": "伤害量提升5%"
+          },
+          {
+            "level": 6,
+            "text": "伤害量提升10%"
+          }
+        ],
+        "multipliers": [
+          {
+            "id": "passion_0_multiplier",
+            "name": "升龙脚（热情0层）",
+            "items": [
+              {
+                "key": "att_rate",
+                "label": "基础倍率(Attack Rate)",
+                "value": "1",
+                "displayValue": "1"
+              },
+              {
+                "key": "pow",
+                "label": "修正倍率(Pow)",
+                "value": "0.95",
+                "displayValue": "0.95"
+              }
+            ]
+          },
+          {
+            "id": "passion_1_multiplier",
+            "name": "升龙脚（热情1层）",
+            "items": [
+              {
+                "key": "att_rate",
+                "label": "基础倍率(Attack Rate)",
+                "value": "1.7",
+                "displayValue": "1.7"
+              },
+              {
+                "key": "pow",
+                "label": "修正倍率(Pow)",
+                "value": "0.95",
+                "displayValue": "0.95"
+              }
+            ]
+          },
+          {
+            "id": "passion_2_multiplier",
+            "name": "升龙脚（热情2层）",
+            "items": [
+              {
+                "key": "att_rate",
+                "label": "基础倍率(Attack Rate)",
+                "value": "2.4",
+                "displayValue": "2.4"
+              },
+              {
+                "key": "pow",
+                "label": "修正倍率(Pow)",
+                "value": "0.95",
+                "displayValue": "0.95"
+              }
+            ]
+          }
+        ],
+        "effects": [
+          {
+            "id": "102",
+            "name": "攻击力提升",
+            "type": "buff",
+            "description": "攻击力提升50%。",
+            "icon": "/library/effects/stic_att_up.webp"
+          },
+          {
+            "id": "reviveblock",
+            "name": "灭亡",
+            "type": "common",
+            "description": "因此技能死亡的目标无法复活。",
+            "icon": null
+          },
+          {
+            "id": "1446",
+            "name": "热情（无法解除）",
+            "type": "buff",
+            "description": "升龙脚伤害量提升。最多可叠加2次。使用升龙脚后，回合结束时解除。",
+            "icon": null
+          }
+        ]
+      },
+      {
+        "id": "sk_c1191_3",
+        "name": "火龙升天",
+        "description": "恢复自身全部生命值，获得额外回合。下次攻击时，触发相同的额外攻击。首次战斗开始时，技能冷却时间增加到最多，攻击力和防御力中较低的能力值调整至与较高的能力值相同。",
+        "icon": "/library/heroes/mei-lin-sk_c1191_3.png",
+        "cooldown": "冷却时间9(6)回合",
+        "soulGain": 3,
+        "pointType": null,
+        "pointRequire": 0,
+        "soulBurn": null,
+        "isAoe": false,
+        "dealsDamage": false,
+        "enhancements": [
+          {
+            "level": 1,
+            "text": "冷却时间减少1回合"
+          },
+          {
+            "level": 2,
+            "text": "冷却时间减少1回合"
+          },
+          {
+            "level": 3,
+            "text": "冷却时间减少1回合"
+          }
+        ],
+        "multipliers": [
+          {
+            "id": "skill_multiplier",
+            "name": "技能倍率",
+            "items": [
+              {
+                "key": "HPUP_CASTER_MAXHP_value",
+                "label": "生命恢复",
+                "value": "100.0% 自身 最大生命值",
+                "displayValue": "100.0% 自身 最大生命值"
+              }
+            ]
+          }
+        ],
+        "effects": [
+          {
+            "id": "add_turn",
+            "name": "额外回合",
+            "type": "common",
+            "description": "令目标可以再行动一次。",
+            "icon": null
+          }
+        ]
+      }
+    ],
+    "devotion": [
+      {
+        "self_type": "att_rate",
+        "self_effect_max": 0.21,
+        "self_effect": 0.21,
+        "public_type": "max_hp_rate",
+        "public_effect_max": 0.12,
+        "public_effect": 0.12,
+        "public_slot": "1234"
       }
     ],
     "exclusives": [],
