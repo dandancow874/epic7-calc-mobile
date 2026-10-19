@@ -1,10 +1,8 @@
+mod user_data_seed;
 use std::fs;
 use std::path::PathBuf;
 use tauri::Manager;
 
-const USER_DATA_SEED_REVISION: &str = "2026-09-23-aliases-presets-1";
-const SEEDED_ALIASES: &str = include_str!("../seed-data/aliases.json");
-const SEEDED_BUILD_PRESETS: &str = include_str!("../seed-data/build-presets.json");
 
 #[tauri::command]
 fn read_data_file(app: tauri::AppHandle, name: String) -> Result<Option<String>, String> {
@@ -44,15 +42,8 @@ fn app_data_dir(app: &tauri::AppHandle) -> Result<PathBuf, String> {
 }
 
 fn install_user_data_seed(app: &tauri::AppHandle) -> Result<(), String> {
-  let dir = app_data_dir(app)?;
-  fs::create_dir_all(&dir).map_err(|error| error.to_string())?;
-  let marker = dir.join(".user-data-seed");
-  if fs::read_to_string(&marker).ok().as_deref() == Some(USER_DATA_SEED_REVISION) {
-    return Ok(());
-  }
-  fs::write(dir.join("aliases.json"), SEEDED_ALIASES).map_err(|error| error.to_string())?;
-  fs::write(dir.join("build-presets.json"), SEEDED_BUILD_PRESETS).map_err(|error| error.to_string())?;
-  fs::write(marker, USER_DATA_SEED_REVISION).map_err(|error| error.to_string())
+  user_data_seed::install(&app_data_dir(app)?)?;
+  Ok(())
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

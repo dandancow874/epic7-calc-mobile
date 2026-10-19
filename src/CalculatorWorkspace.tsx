@@ -1054,6 +1054,7 @@ function CombatPanel(props: {
             value={Number(props.values[key] ?? min)}
             min={min}
             max={max}
+            inputMax={key === 'targetMaxHP' ? FormDefaults.targetMaxHP?.max : undefined}
             locked={props.useBuildPreset && Boolean(props.buildId) && isBuildOwnedVisibleField(props.side, key)}
             onChange={(value) => props.onValueChange(props.side, key, value)}
           />
@@ -1180,9 +1181,9 @@ function SpecialInput(props: {
   );
 }
 
-function StatField(props: { label: string; value: number; min: number; max: number; locked?: boolean; onChange: (value: number) => void }) {
+function StatField(props: { label: string; value: number; min: number; max: number; inputMax?: number; locked?: boolean; onChange: (value: number) => void }) {
   return (
-    <label className="stat-field">
+    <label className="stat-field" title={props.inputMax && props.inputMax > props.max ? '可手动输入Boss生命值；滑条保留常用范围' : undefined}>
       <span>{props.label}</span>
       <input
         type="range"
@@ -1195,7 +1196,7 @@ function StatField(props: { label: string; value: number; min: number; max: numb
       {props.locked ? <output className="number-box locked-number">{props.value}</output> : <NumberDraftInput
         className="number-box"
         min={props.min}
-        max={props.max}
+        max={props.inputMax ?? props.max}
         value={props.value}
         emptyValue={props.min}
         blankWhenEmpty={false}
