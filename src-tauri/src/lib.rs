@@ -1,4 +1,3 @@
-mod user_data_seed;
 use std::fs;
 use std::path::PathBuf;
 use tauri::Manager;
@@ -41,16 +40,10 @@ fn app_data_dir(app: &tauri::AppHandle) -> Result<PathBuf, String> {
   app.path().app_data_dir().map_err(|error| error.to_string())
 }
 
-fn install_user_data_seed(app: &tauri::AppHandle) -> Result<(), String> {
-  user_data_seed::install(&app_data_dir(app)?)?;
-  Ok(())
-}
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   tauri::Builder::default()
     .setup(|app| {
-      install_user_data_seed(app.handle())?;
       if cfg!(debug_assertions) {
         app.handle().plugin(
           tauri_plugin_log::Builder::default()
