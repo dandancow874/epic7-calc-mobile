@@ -13,6 +13,7 @@ $sharedFiles = @(
   'src\app\models\forms.ts',
   'src\app\models\hero.ts',
   'src\app\models\skill.ts',
+  'src\app\models\target.ts',
   'src\assets\data\constants.ts',
   'src\assets\data\heroes.ts',
   'src\assets\data\artifacts.ts',
