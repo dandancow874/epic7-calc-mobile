@@ -253,3 +253,17 @@ body { font-size: 14px; line-height: 1.4; }
 .target-stat-grid { gap: 6px; }
 .build-editor__section { padding: 9px; }
 .target-stat-value input { height: 36px; font-size: 16px; }
+
+/* Compact controls for manual preset snapshots and shield percentages. */
+@media (max-width: 720px) {
+  .stat-field.with-ratio { grid-template-columns: 70px minmax(0, 1fr) 54px 68px; gap: 6px; }
+  .barrier-ratio-input input { height: 36px; font-size: 14px; }
+  .modal-scrim.snapshot-scrim { z-index: 310; padding: 8px; place-items: center; }
+  .calculator-preset-dialog { width: min(620px, calc(100vw - 16px)); max-height: calc(100dvh - 16px); }
+  .calculator-preset-dialog .profile-body { padding: 12px; gap: 10px; }
+  .snapshot-stats { gap: 8px; }
+  .snapshot-stats label { padding: 8px; }
+  .snapshot-stats span { font-size: 13px; }
+  .snapshot-stats small { font-size: 10px; }
+  .snapshot-name { gap: 8px; }
+}
